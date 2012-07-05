@@ -28,7 +28,7 @@ public class BackstabListener implements Listener {
 				double d = -(a * col.getX() + c * col.getZ()) / Math.sqrt(a*a + c*c);
 				if ((a * loc.getX()) + (c * loc.getZ()) + d < 0) {
 					attacked.damage(e.getDamage() * 2);
-					attacker.giveExp(attacked.getMaxHealth() * 2);
+					attacker.giveExp((int) Math.round(attacked.getMaxHealth() * 0.5));
 				}
 			}
 		} catch (ClassCastException ex) {
