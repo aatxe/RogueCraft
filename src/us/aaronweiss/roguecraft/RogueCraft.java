@@ -9,7 +9,7 @@ import us.aaronweiss.roguecraft.listeners.SneakEntityListener;
 /**
  * RogueCraft: a Bukkit plugin to make stealth worthwhile.
  * @author Aaron Weiss
- * @version 1.0
+ * @version 1.2
  */
 public class RogueCraft extends JavaPlugin {
 	public final Logger logger = Logger.getLogger("Minecraft");

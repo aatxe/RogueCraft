@@ -11,7 +11,7 @@ import org.bukkit.util.Vector;
 /**
  * A listener to deal additional damage with backstabs.
  * @author Aaron Weiss
- * @version 1.2
+ * @version 1.3
  */
 public class BackstabListener implements Listener {
 	@EventHandler
