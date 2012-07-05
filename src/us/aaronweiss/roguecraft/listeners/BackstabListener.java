@@ -1,15 +1,17 @@
 package us.aaronweiss.roguecraft.listeners;
 
+import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.util.Vector;
 
 /**
  * A listener to deal additional damage with backstabs.
  * @author Aaron Weiss
- * @version 1.0
+ * @version 1.2
  */
 public class BackstabListener implements Listener {
 	@EventHandler
@@ -17,22 +19,15 @@ public class BackstabListener implements Listener {
 		try {
 			Player attacker = (Player) e.getDamager();
 			LivingEntity attacked = (LivingEntity) e.getEntity();
-			double yaw = attacker.getLocation().getYaw();
-			double yaw2 = attacked.getLocation().getYaw();
-			double thresh = 55.0;
+			Location loc = attacker.getLocation();
+			Location col = attacked.getLocation();
+			Vector dir = attacked.getLocation().getDirection().normalize();
 			if (attacker.isSneaking()) {
-				if (yaw < 0 && yaw2 > 0) {
-					yaw += 360;
-				} else if (yaw > 0 && yaw2 < 0) {
-					yaw2 +=  360;
-				}
-				if (yaw > 360) {
-					yaw %= 360;
-				} else if (yaw2 > 360) {
-					yaw2 %= 360;
-				}
-				if (Math.abs(yaw - yaw2) <= thresh) {
-					attacked.damage(e.getDamage() * 2, e.getDamager());
+				double a = dir.getX();
+				double c = dir.getZ();
+				double d = -(a * col.getX() + c * col.getZ()) / Math.sqrt(a*a + c*c);
+				if ((a * loc.getX()) + (c * loc.getZ()) + d < 0) {
+					attacked.damage(e.getDamage() * 2);
 					attacker.giveExp(attacked.getMaxHealth() * 2);
 				}
 			}

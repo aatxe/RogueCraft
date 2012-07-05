@@ -1,15 +1,17 @@
 package us.aaronweiss.roguecraft.listeners;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.util.Vector;
 
 /**
  * A listener to fix the AI for sneaking.
  * @author Aaron Weiss
- * @version 1.0
+ * @version 1.2
  */
 public class SneakEntityListener implements Listener {
 	@EventHandler
@@ -17,21 +19,14 @@ public class SneakEntityListener implements Listener {
 		try {
 			Entity entity = e.getEntity();
 			Player target = (Player) e.getTarget();
-			double yaw = entity.getLocation().getYaw();
-			double yaw2 = target.getLocation().getYaw();
-			double thresh = 55.0;
+			Location loc = target.getLocation();
+			Location col = entity.getLocation();
+			Vector dir = entity.getLocation().getDirection().normalize();
 			if (target.isSneaking()) {
-				if (yaw < 0 && yaw2 > 0) {
-					yaw += 360;
-				} else if (yaw > 0 && yaw2 < 0) {
-					yaw2 +=  360;
-				}
-				if (yaw > 360) {
-					yaw %= 360;
-				} else if (yaw2 > 360) {
-					yaw2 %= 360;
-				}
-				if (Math.abs(yaw - yaw2) <= thresh) {
+				double a = dir.getX();
+				double c = dir.getZ();
+				double d = -(a * col.getX() + c * col.getZ()) / Math.sqrt(a*a + c*c);
+				if ((a * loc.getX()) + (c * loc.getZ()) + d < 0) {
 					e.setCancelled(true);
 				}
 			}
